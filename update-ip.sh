@@ -1,33 +1,26 @@
 #!/bin/bash
 
 REPO_DIR="/home/ubuntu/ip-redirect"
-cd "$REPO_DIR" || exit 1
+cd 
 
-PUBLIC_IP=$(curl -s https://api.ipify.org)
+PUBLIC_IP=124.156.174.232
 
-if [ -z "$PUBLIC_IP" ]; then
+if [ -z "" ]; then
+    PUBLIC_IP=124.156.174.232
+fi
+
+if [ -z "" ]; then
     echo "Failed to get public IP"
     exit 1
 fi
 
-echo "Current public IP: $PUBLIC_IP"
+echo "Current public IP: "
 
-cp index.html index.html.backup
-sed "s|SERVER_IP_PLACEHOLDER|${PUBLIC_IP}|g" index.html.backup > index.html
-rm index.html.backup
-
-git config user.name "Auto Update Bot"
-git config user.email "bot@auto-update.local"
+sed -i "s/SERVER_IP//g" index.html
 
 git add index.html
-
-if git diff --cached --quiet; then
+if git commit -m "Update server IP to "; then
+    git push -u origin main
+else
     echo "No changes to commit"
-    exit 0
 fi
-
-git commit -m "Update server IP to ${PUBLIC_IP}"
-
-git push origin main --force
-
-echo "Successfully updated GitHub Pages with IP: $PUBLIC_IP"

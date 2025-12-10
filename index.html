@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Server Redirect</title>
-    <meta http-equiv="refresh" content="0; url=http://SERVER_IP_PLACEHOLDER">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,23 +13,48 @@
             height: 100vh;
             margin: 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
         }
         .container {
             text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        h1 { margin-bottom: 20px; }
-        a {
-            color: #fff;
-            text-decoration: underline;
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        #countdown {
+            font-size: 1.2rem;
+            color: #667eea;
+            margin: 1rem 0;
+        }
+        #ip {
+            font-weight: bold;
+            color: #764ba2;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Redirecting to Server...</h1>
-        <p>If not redirected automatically, <a href="http://SERVER_IP_PLACEHOLDER">click here</a>.</p>
-        <p>Server IP: <strong>SERVER_IP_PLACEHOLDER</strong></p>
+        <h1>Redirecting to Server</h1>
+        <p>Server IP: <span id="ip">SERVER_IP</span></p>
+        <p id="countdown">Redirecting in 3 seconds...</p>
     </div>
+    <script>
+        const serverIp = 'SERVER_IP';
+        let seconds = 3;
+        const countdownElement = document.getElementById('countdown');
+        const interval = setInterval(() => {
+            seconds--;
+            if (seconds > 0) {
+                countdownElement.textContent = 'Redirecting in ' + seconds + ' second' + (seconds > 1 ? 's' : '') + '...';
+            } else {
+                clearInterval(interval);
+                window.location.href = 'http://' + serverIp;
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
